@@ -1,0 +1,37 @@
+{
+    "count": 6,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "title": "Alien",
+            "director": "Ridley Scott",
+            "release_date": "1979"
+        },
+        {
+            "title": "Aliens",
+            "director": "James Cameron",
+            "release_date": "1986"
+        },
+        {
+            "title": "Alien 3",
+            "director": "David Fincher",
+            "release_date": "1992"
+        },
+        {
+            "title": "Alien Resurection",
+            "director": "Jean-Pierre Jeunet",
+            "release_date": "1997"
+        },
+        {
+            "title": "Prometheus",
+            "director": "Ridley Scott",
+            "release_date": "2012"
+        },
+        {
+            "title": "Alien Covenant",
+            "director": "Ridley Scott",
+            "release_date": "2017"
+        }
+    ]
+}

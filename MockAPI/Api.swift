@@ -37,49 +37,34 @@ final class ApiClient: Api {
 
 final class MockApiClient: Api {
     
+    private static let delay = 4
+    
     func fetchMovies(completion: @escaping (Bool, FilmsData?) -> Void) {
-       
-    }
-}
-
-
-struct Film: Decodable {
-
-    var title: String
-    var opening: String
-    var director: String
-    var releaseDate: String
-
-    enum CodingKeys: String, CodingKey {
-        case title
-        case opening = "opening_crawl"
-        case director
-        case releaseDate = "release_date"
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        title = try container.decode(String.self, forKey: .title)
-        opening = try container.decode(String.self, forKey: .opening)
-        director = try container.decode(String.self, forKey: .director)
-        releaseDate = try container.decode(String.self, forKey: .releaseDate)
-    }
-}
-
-
-struct FilmsData: Decodable {
-    
-    var count: Int
-    var results: [Film]
-    
-    enum CodingKeys: String, CodingKey {
-        case count
-        case results
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(MockApiClient.delay)) {
+            let filePath = "films"
+            MockApiClient.loadJsonDataFromFile(filePath, completion: { data in
+                if let json = data {
+                    do {
+                        let estimate = try JSONDecoder().decode(FilmsData.self, from: json)
+                        completion(true, estimate)
+                    }
+                    catch _ as NSError {
+                        fatalError("Couldn't load data from \(filePath)")
+                    }
+                }
+            })
+        }
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        count = try container.decode(Int.self, forKey: .count)
-        results = try container.decode(Array.self, forKey: .results)
+    private static func loadJsonDataFromFile(_ path: String, completion: (Data?) -> Void) {
+        if let fileUrl = Bundle.main.url(forResource: path, withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: fileUrl, options: [])
+                completion(data as Data)
+            } catch (let error) {
+                print(error.localizedDescription)
+                completion(nil)
+            }
+        }
     }
 }

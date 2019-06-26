@@ -37,6 +37,8 @@ class FilmsTableViewController: UITableViewController {
         activityIndicatorView.backgroundColor = .gray
         activityIndicatorView.center = tableView.center
         view.addSubview(activityIndicatorView)
+        
+        tableView.allowsSelection = false
 
         activityIndicatorView.startAnimating()
         api.fetchMovies { (success, filmsData) in
@@ -61,6 +63,7 @@ class FilmsTableViewController: UITableViewController {
         cell.titleLabel.text = film.title
         cell.directorLabel.text = film.director
         cell.releaseDateLabel.text = film.releaseDate
+        cell.backgroundColor = indexPath.row % 2 == 0 ? .clear : .lightGray
         
         return cell
     }
